@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<header>
+		<title>
+				
+		</title>
+
+	</header>
+	<body>
+		<form>
+			
+			H:<input type="text" id="hour" value="hour" placeholder="hrs">
+			M:<input type="text" id="minute" value="minute" placeholder="mins">
+			
+			<input type="submit" value="Submit">
+
+			<button type="button" id="play">play</button>
+			<button type="button" id="stop">stop</button>
+			<button type="button" id="restart">restart</button>
+
+
+		</form>
+
+
+
+	<script type="text/javascript">
+
+	//variable containing input values hour and minute
+
+	var hour =document.getElementById('hour');
+	var minute =document.getElementById('hour');
+
+	var startTime = null
+	var timerGo = false
+
+	function (e) {
+		window.preventDefault();	
+			function starttimer(){
+				showtime()
+			}
+
+			function showtime() {
+				var now = new Date()
+				var hours = now.getHours ()
+				var minutes = no.getMinutes ()
+				var seconds = now.getSeconds ()
+				var timeValue = "" + ((hours > 12)? hours - 12 : hours)
+				timeValue  += ((minutes < 10) ? ":0" : ":") + minutes
+   				timeValue  += ((seconds < 10) ? ":0" : ":") + seconds
+    			timeValue  += (hours >= 12) ? " P.M." : " A.M."
+    			document.clock.face.value = timeValue 
+   				timerID = setTimeout("showtime()",1000)
+    			timerRunning = true
+
+			</script>
+
+		<body onLoad="startclock()">
+
+			<form name="clock" onSubmit="0">
+				<input type="text" name="timer" size=11 value ="....Initializing....">
+			</form>
+
+		</body>
+</html>
