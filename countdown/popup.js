@@ -222,6 +222,7 @@
 	}
 
 // SITE LIST
+
 function addPageToStorage(specPage){
     trackButton('Options','Button','AddPage');
     var pageToBlock = document.getElementById('block_page').value;
@@ -332,7 +333,7 @@ function renderBlockList(){
             td.append('<strong>'+BlockedSites[i].url+'</strong>');
             var td = $('<td style="min-width:230px;" rel="'+i+'"></tr>');
             tr.append(td);
-            if(!getPref("whitelist")){
+            /* if(!getPref("whitelist")){
                 var input = $('<input type="text" value="" class="redirect" />');
                 td.append(input);
                 if(BlockedSites[i].redirect){
@@ -351,14 +352,14 @@ function renderBlockList(){
                         var rel = $(this).parent('td').attr('rel');
                         var val = $(this).parent('td').children('.redirect').val();
                         setRedirect(rel,val);
-                    });
+                    }); 
                 }
             }else{
                 var white_list_redir = getPref('whitelist_redirect') || '';
                 if(cropUrl(white_list_redir) == BlockedSites[i].url){
                     td.append('<span>'+translate('redirect_page')+'</span>');
                 }
-            }
+            }*/
             var td = $('<td rel="'+i+'"></tr>');
             tr.append(td);
             var remove = $('<button class="remove btn btn-mini btn-danger"><i class="icon-remove"></i></button>');
@@ -370,7 +371,7 @@ function renderBlockList(){
                 }
             });
         }
-        if(!getPref("whitelist")){
+        /*if(!getPref("whitelist")){
             var div = $('<div><span style="display:inline-block;width:160px;">'+translate('Default_redirect_page')+'</span></div>')
             blockedList.append(div);
             var input = $('<input type="text" value="" class="blacklist_redirect" style="margin:0 8px 0 0;" />');
@@ -437,8 +438,8 @@ function renderBlockList(){
                     }else{
                         showMessage(translate('wrong_url'));
                     }
-                });
-            }
+                }); 
+            } */
         }
     }
 }
@@ -510,7 +511,7 @@ function renderAuthZone(){
 	// block desired urls
 	//need to add functionality to add or remove urls
 	// need to add functionality on blockedsite.html to add or remove the site from the alert
-	/*
+	
 	var blockUrls = {};
 
 	blockUrls.DEFAULT_DELAY_SECONDS = 20 // *1000 for milliseconds used by js
