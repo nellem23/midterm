@@ -1,23 +1,10 @@
-(function () {
-  "use strict";
-	window.onload = function(e){ 
-    // your code 
-    e.prevent.Default();
-	};
-    
-    if (window.addEventListener) {
-        window.addEventListener('DOMContentLoaded', domReady, false);
-    } else {
-        window.attachEvent('onload', domReady);
-    }
-
-	function domReady() {
 
 	var refreshDisplayTimeout;
 	var bgpage = chrome.extension.getBackgroundPage();
 	var previousValues = [15, 30, 45, 60];
 	var editing = false;
 	var alertBlock = false;
+	var pauseDate = 1;
 
 	document.addEventListener('DOMContentLoaded', function () {
 	    load();
@@ -43,7 +30,7 @@
 	{
 	    document.getElementById(section).style.display = "none";
 	}
-
+	
 	function load()
 	{
 	    hide("settings");
@@ -76,7 +63,7 @@
 	        refreshDisplay();
 			show("modify");
 		}
-	}
+  }	
 
 	function getChoice()
 	{
@@ -189,6 +176,7 @@
 		refreshDisplayTimeout = setTimeout(refreshDisplay, 100);
 	}
 
+
 	function pauseTimer()
 	{
 	    hide("pause");
@@ -221,6 +209,8 @@
 		show("settings");
 		hide("modify");
 	}
+  
+  console.log("done");
 
 // SITE LIST
 
@@ -236,22 +226,22 @@ function addPageToStorage(specPage){
     }
     pageToBlock = pageToBlock.trim();
     $('#page_exist').hide();
-    /*$('#wrong_url').hide();
+    $('#wrong_url').hide();
     if(isURL(pageToBlock) && pageToBlock!=getPref('blacklist_redirect')){
         pageToBlock = pageToBlock.toLowerCase();
         $('#block_page').val("");
-        if(pageToBlock=="" || pageToBlock==null) return;
+        if(pageToBlock==="" || pageToBlock===null) return;
         pageToBlock=cropUrl(pageToBlock);
         var splited = pageToBlock.split(".");
         if(splited[0]=="www"){
             splited.splice(0,1);
             pageToBlock=splited.join(".");
-        } */
+        } 
+
         if(localStorage.BlockedSites){
             var BlockedSites = JSON.parse(localStorage.BlockedSites);
             for(var i=0;i<BlockedSites.length;i++){
-                if(BlockedSites[i].url==pageToBlock || "www." + BlockedSites[i].url==pageToBlock
-              ||BlockedSites[i].url=="www."+pageToBlock) {
+                if(BlockedSites[i].url==pageToBlock || "www." + BlockedSites[i].url==pageToBlock||BlockedSites[i].url=="www."+pageToBlock) {
                     showMessage(translate('page_exist'));
                     return;
                 } 
@@ -264,9 +254,9 @@ function addPageToStorage(specPage){
         }
         renderDomainSelect();
         saveSettings();
-    }/*else{
+    } else{
         showMessage(translate('wrong_url'));
-    } */
+    } 
     pageToBlock.value="";
 }
 function removeFromList(index){
@@ -279,7 +269,8 @@ function removeFromList(index){
     saveSettings();
     
 }
-  
+  	//Remove blocked site from on click when on blockedsite.html
+
 	document.querySelector('#unblock').addEventListener('click',removeFromList);
 
 function renderBlockList(){
@@ -302,14 +293,11 @@ function renderBlockList(){
                 if(confirm(translate('Really_remove'))){
                     removeFromList(rel);
                 }
-            });
-   
-        }
+            }   
+        );
+      }
     }
 }
-
-
-
 
 	// AUTH
 
@@ -358,12 +346,15 @@ function renderAuthZone(){
         }
     });
 }
+
+
+
 	// block desired urls
 	//need to add functionality to add or remove urls
 	// need to add functionality on blockedsite.html to add or remove the site from the alert
 	
 	//var BlockedSites = {};
-
+	var on_or_off = 0;
 	BlockedSites.DEFAULT_DELAY_SECONDS = 20; // *1000 for milliseconds used by js
 
 	if (localStorage.BlockSites_DELAY_SECONDS) {
@@ -404,8 +395,9 @@ function renderAuthZone(){
 	            do { curDate = new Date(); }
 	            while ( curDate-date < BlockedSites.PAUSE);
 	        }
-	    }
-	};
+	    
+	}
 	BlockedSites.delay_page_load();
-  }
-});
+  };
+};
+console.log("program done");
