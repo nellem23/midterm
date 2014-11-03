@@ -260,14 +260,7 @@ function addPageToStorage(specPage){
             Site.url=pageToBlock;
             Site.count=0;
             BlockedSites.push(Site);
-            localStorage['BlockedSites']=JSON.stringify(BlockedSites);
-        }else{
-            var BlockedSites=[];
-            var Site=new Object();
-            Site.url=pageToBlock;
-            Site.count=0;
-            BlockedSites.push(Site);
-            localStorage['BlockedSites']=JSON.stringify(BlockedSites);
+            localStorage.BlockedSites=JSON.stringify(BlockedSites);
         }
         renderDomainSelect();
         saveSettings();
@@ -280,12 +273,13 @@ function removeFromList(index){
     trackButton('Options','Button','RemovePage');
     var BlockedSites = JSON.parse(localStorage.BlockedSites);
     BlockedSites.splice(index, 1);
-    localStorage['BlockedSites']=JSON.stringify(BlockedSites);
+    localStorage.BlockedSites=JSON.stringify(BlockedSites);
     renderBlockList();
     renderDomainSelect();
     saveSettings();
     
-};
+}
+  
 	document.querySelector('#unblock').addEventListener('click',removeFromList);
 
 function renderBlockList(){
@@ -301,12 +295,8 @@ function renderBlockList(){
             var td = $('<td rel="'+i+'"></tr>');
             tr.append(td);
             td.append('<strong>'+BlockedSites[i].url+'</strong>');
-            var td = $('<td style="min-width:230px;" rel="'+i+'"></tr>');
-            tr.append(td);
-            var td = $('<td rel="'+i+'"></tr>');
-            tr.append(td);
             var remove = $('<button class="remove btn btn-mini btn-danger"><i class="icon-remove"></i></button>');
-            td.append(remove);
+          td.append(remove);
             remove.click(function(){
                 var rel = $(this).parent('td').attr('rel');
                 if(confirm(translate('Really_remove'))){
@@ -337,7 +327,7 @@ function renderAuthZone(){
     
     $('#block_page').click(function(){
         $('#block_page').select();
-    })
+    });
     
     //buttons
     $('#close_button').val(translate('close_button'));
@@ -353,10 +343,10 @@ function renderAuthZone(){
                 window.close();
             });
         });
-    })
+    });
     // addPage to block_list
     var addPage=document.getElementById('add_page');
-    addPage.setAttribute('value', translate('add_page'))
+    addPage.setAttribute('value', translate('add_page'));
     addPage.addEventListener("click",function(){
         addPageToStorage();
         renderBlockList();
@@ -367,14 +357,14 @@ function renderAuthZone(){
             renderBlockList();
         }
     });
-
+}
 	// block desired urls
 	//need to add functionality to add or remove urls
 	// need to add functionality on blockedsite.html to add or remove the site from the alert
 	
 	//var BlockedSites = {};
 
-	BlockedSites.DEFAULT_DELAY_SECONDS = 20 // *1000 for milliseconds used by js
+	BlockedSites.DEFAULT_DELAY_SECONDS = 20; // *1000 for milliseconds used by js
 
 	if (localStorage.BlockSites_DELAY_SECONDS) {
 	    BlockedSites.PAUSE = localStorage.BlockSites_DELAY_SECONDS*1000;
@@ -384,8 +374,7 @@ function renderAuthZone(){
 
 	if (localStorage.BlockSites_ALLOWED_URLS) {
 	    var allowed_urls = localStorage.BlockSites_ALLOWED_URLS;
-	} else {
-	    var allowed_urls = !BlockedSites;
+  } else {
 
 		BlockedSites.delay_page_load = function() {    
 	    if (localStorage.BlockedSites_ON_OR_OFF && localStorage.BlockedSites_ON_OR_OFF != "off") {
@@ -418,4 +407,5 @@ function renderAuthZone(){
 	    }
 	};
 	BlockedSites.delay_page_load();
-};
+  }
+});
