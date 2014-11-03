@@ -387,7 +387,7 @@ function renderAuthZone(){
 	            }
 	        }
 	        if (!allowed) {
-				window.location = "file:///Users/nelle/Desktop/midterm-1a/countdown/blockedsite.html";
+				window.location = "http://nellemcdade.com/js-midterm/blockedsite.html";
 	            console.log("not an important page: pausing pageload for "+ (blockUrls.PAUSE/1000) +" seconds");
 	            console.log(host);
 	            var date = new Date();
