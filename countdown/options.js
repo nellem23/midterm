@@ -43,24 +43,7 @@ function changeCheck(id){
     }
     saveSettings();
 }
-function setList(){
-    if(getPref('whitelist')){
-        if(getPref("BlockedSites")!=undefined){
-            var BlockedSites=JSON.parse(getPref("BlockedSites"));
-            for(var i=0;i<BlockedSites.length;i++)
-                BlockedSites[i].count=0;
-            setPref('BlockedSites',JSON.stringify(BlockedSites));
-        }
-        document.getElementById('list_title').innerHTML=translate("whitelist_title");
-        trackButton('Options','SetList','White');
-    }else{
-        setPref("whitelistCount",0);
-        document.getElementById('list_title').innerHTML=translate("blacklist_title");
-        trackButton('Options','SetList','Black');
-    }
-    renderBlockList();
-    saveSettings();
-}
+
 function setPasswd(){
     var passwd = document.getElementById('passwd').value;
     if(passwd.length<5){
@@ -76,7 +59,7 @@ function setPasswd(){
     document.getElementById('passwd').value="";
     $('#password_set_label').show();
     
-    
+    index
 }
 function hideIcon(){
     /*if(document.getElementById('warning_check').checked){

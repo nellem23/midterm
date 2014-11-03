@@ -1,8 +1,9 @@
 (function () {
+  "use strict";
 	window.onload = function(e){ 
     // your code 
     e.prevent.Default();
-	}
+	};
     
     if (window.addEventListener) {
         window.addEventListener('DOMContentLoaded', domReady, false);
@@ -61,7 +62,7 @@
 		{
 			// LOADS custom times IF they exist
 			for(var i = 0; i < document.choices.radio.length; i++)
-				if(localStorage[i] != null)
+				if(localStorage[i] !== null)
 					document.getElementById("s"+i).textContent = localStorage[i];
 			
 			show("settings");
@@ -83,7 +84,7 @@
 		var num;
 		for(var i = 0; i < document.choices.radio.length; i++)
 		{
-			if(document.choices.radio[i].checked == true)
+			if(document.choices.radio[i].checked === true)
 				num = parseInt(document.getElementById("s"+i).textContent);
 		}
 		return num;
@@ -168,7 +169,7 @@
 	// Returns true if 0 <= amt <= 240
 	function isValid(amt)
 	{
-		if(isNaN(amt) || (amt == null))
+		if(isNaN(amt) || (amt === null))
 			return false;
 				else if((amt < 0) || (amt > 240))
 			return false;
@@ -235,7 +236,7 @@ function addPageToStorage(specPage){
     }
     pageToBlock = pageToBlock.trim();
     $('#page_exist').hide();
-    $('#wrong_url').hide();
+    /*$('#wrong_url').hide();
     if(isURL(pageToBlock) && pageToBlock!=getPref('blacklist_redirect')){
         pageToBlock = pageToBlock.toLowerCase();
         $('#block_page').val("");
@@ -245,12 +246,12 @@ function addPageToStorage(specPage){
         if(splited[0]=="www"){
             splited.splice(0,1);
             pageToBlock=splited.join(".");
-        }
+        } */
         if(localStorage.BlockedSites){
             var BlockedSites = JSON.parse(localStorage.BlockedSites);
             for(var i=0;i<BlockedSites.length;i++){
                 if(BlockedSites[i].url==pageToBlock || "www." + BlockedSites[i].url==pageToBlock
-                    || BlockedSites[i].url=="www."+pageToBlock) {
+              ||BlockedSites[i].url=="www."+pageToBlock) {
                     showMessage(translate('page_exist'));
                     return;
                 } 
@@ -270,9 +271,9 @@ function addPageToStorage(specPage){
         }
         renderDomainSelect();
         saveSettings();
-    }else{
+    }/*else{
         showMessage(translate('wrong_url'));
-    }
+    } */
     pageToBlock.value="";
 }
 function removeFromList(index){
@@ -284,40 +285,9 @@ function removeFromList(index){
     renderDomainSelect();
     saveSettings();
     
-}
-/*
-Custom Redirect - but is now just going to send it to one page
+};
+	document.querySelector('#unblock').addEventListener('click',removeFromList);
 
-function setRedirect(i,val){
-    trackButton('Options','Button','Set Redirect');
-    if(isURL(val,true)){
-        var BlockedSites = JSON.parse(localStorage.BlockedSites);
-        var isInBL = false;
-        for(var j=0;j<BlockedSites.length;j++){
-            if(cropUrl(val) == BlockedSites[j].url){
-                isInBL = true;
-            } 
-        }
-        if(!isInBL){
-            BlockedSites[i].redirect = val;
-            localStorage['BlockedSites']=JSON.stringify(BlockedSites);
-            renderBlockList();
-            saveSettings();
-        }else{
-            showMessage(translate('wrong_url'));
-        }
-    }else{
-        showMessage(translate('wrong_url'));
-    }
-}
-function unSetRedirect(i){
-    trackButton('Options','Button','Unset Redirect');
-    var BlockedSites = JSON.parse(localStorage.BlockedSites);
-    BlockedSites[i].redirect = undefined;
-    localStorage['BlockedSites']=JSON.stringify(BlockedSites);
-    renderBlockList();
-    saveSettings();
-} */
 function renderBlockList(){
     if(localStorage.BlockedSites){
         var BlockedSites = JSON.parse(localStorage.BlockedSites);
@@ -333,33 +303,6 @@ function renderBlockList(){
             td.append('<strong>'+BlockedSites[i].url+'</strong>');
             var td = $('<td style="min-width:230px;" rel="'+i+'"></tr>');
             tr.append(td);
-            /* if(!getPref("whitelist")){
-                var input = $('<input type="text" value="" class="redirect" />');
-                td.append(input);
-                if(BlockedSites[i].redirect){
-                    input.val(BlockedSites[i].redirect);
-                    input.attr('disabled','disabled');
-                    var unset = $('<input type="button" value="'+translate('Unset')+'" />');
-                    td.append(unset);
-                    unset.click(function(){
-                        var rel = $(this).parent('td').attr('rel');
-                        unSetRedirect(rel);
-                    });
-                }else{
-                    var set = $('<input type="button" value="'+translate('Set')+'" />');
-                    td.append(set);
-                    set.click(function(){
-                        var rel = $(this).parent('td').attr('rel');
-                        var val = $(this).parent('td').children('.redirect').val();
-                        setRedirect(rel,val);
-                    }); 
-                }
-            }else{
-                var white_list_redir = getPref('whitelist_redirect') || '';
-                if(cropUrl(white_list_redir) == BlockedSites[i].url){
-                    td.append('<span>'+translate('redirect_page')+'</span>');
-                }
-            }*/
             var td = $('<td rel="'+i+'"></tr>');
             tr.append(td);
             var remove = $('<button class="remove btn btn-mini btn-danger"><i class="icon-remove"></i></button>');
@@ -370,79 +313,11 @@ function renderBlockList(){
                     removeFromList(rel);
                 }
             });
-        }
-        /*if(!getPref("whitelist")){
-            var div = $('<div><span style="display:inline-block;width:160px;">'+translate('Default_redirect_page')+'</span></div>')
-            blockedList.append(div);
-            var input = $('<input type="text" value="" class="blacklist_redirect" style="margin:0 8px 0 0;" />');
-            div.append(input);
-            if(getPref('blacklist_redirect')){
-                input.val(getPref('blacklist_redirect'));
-                input.attr('disabled','disabled');
-                var unset = $('<input type="button" value="'+translate('Unset')+'" />');
-                div.append(unset);
-                unset.click(function(){
-                    setPref('blacklist_redirect','');
-                    renderBlockList();
-                    saveSettings();
-                });
-            }else{
-                var set = $('<input type="button" value="'+translate('Set')+'" />');
-                div.append(set);
-                set.click(function(){
-                    var val = $('.blacklist_redirect').val();
-                    if(isURL(val,true)){
-                        var isInBL = false;
-                        for(var j=0;j<BlockedSites.length;j++){
-                            if(cropUrl(val) == BlockedSites[j].url){
-                                isInBL = true;
-                            } 
-                        }
-                        if(!isInBL){
-                            setPref('blacklist_redirect',val);
-                            renderBlockList();
-                            saveSettings();
-                        }else{
-                            showMessage(translate('wrong_url'));
-                        }
-                    }else{
-                        showMessage(translate('wrong_url'));
-                    }
-                });
-            }
-        }else{
-            var div = $('<div>'+translate('Redirect_page')+'&nbsp; </div>');
-            blockedList.append(div);
-            var input = $('<input type="text" value="" class="whitelist_redirect" />');
-            div.append(input);
-            if(getPref('whitelist_redirect')){
-                input.val(getPref('whitelist_redirect'));
-                input.attr('disabled','disabled');
-                var unset = $('<input type="button" value="'+translate('Unset')+'" />');
-                div.append(unset);
-                unset.click(function(){
-                    setPref('whitelist_redirect','');
-                    renderBlockList();
-                    saveSettings();
-                });
-            }else{
-                var set = $('<input type="button" value="'+translate('Set')+'" />');
-                div.append(set);
-                set.click(function(){
-                    var val = $('.whitelist_redirect').val();
-                    if(isURL(val,true)){
-                        setPref('whitelist_redirect',val);
-                        addPageToStorage(val);
-                        renderBlockList();
-                        saveSettings();
-                    }else{
-                        showMessage(translate('wrong_url'));
-                    }
-                }); 
-            } */
+   
         }
     }
 }
+
 
 
 
@@ -453,12 +328,7 @@ function renderAuthZone(){
     //titles
     $('#h1').html(chrome.app.getDetails().name);
     document.getElementById('func_title').innerHTML = translate('func_title');
-    if(getPref('whitelist')){
-        document.getElementById('list_title').innerHTML = translate('whitelist_title');
-    }else{
-        document.getElementById('list_title').innerHTML = translate('blacklist_title');
-    }
-    
+
     //labels
     document.getElementById('stats_label').innerHTML = translate('stats');
     document.getElementById('enable_label').innerHTML=translate('enable_label');
@@ -468,14 +338,6 @@ function renderAuthZone(){
     $('#block_page').click(function(){
         $('#block_page').select();
     })
-    document.getElementById('set_password').value=translate('set_password');
-    
-    //listeners
-    document.getElementById('set_password').addEventListener("click",function(){  
-        trackButton('Options','Uninstall section','Set Password');
-        setPasswd();  
-    },false);
-    
     
     //buttons
     $('#close_button').val(translate('close_button'));
@@ -497,12 +359,10 @@ function renderAuthZone(){
     addPage.setAttribute('value', translate('add_page'))
     addPage.addEventListener("click",function(){
         addPageToStorage();
-        
         renderBlockList();
     },false);
     $('#block_page').keydown(function(e){
         if(e.keyCode==13){
-            
             addPageToStorage();
             renderBlockList();
         }
@@ -512,39 +372,23 @@ function renderAuthZone(){
 	//need to add functionality to add or remove urls
 	// need to add functionality on blockedsite.html to add or remove the site from the alert
 	
-	var blockUrls = {};
+	//var BlockedSites = {};
 
-	blockUrls.DEFAULT_DELAY_SECONDS = 20 // *1000 for milliseconds used by js
+	BlockedSites.DEFAULT_DELAY_SECONDS = 20 // *1000 for milliseconds used by js
 
-	if (localStorage.blockUrls_DELAY_SECONDS) {
-	    blockUrls.PAUSE = localStorage.blockUrls_DELAY_SECONDS*1000;
+	if (localStorage.BlockSites_DELAY_SECONDS) {
+	    BlockedSites.PAUSE = localStorage.BlockSites_DELAY_SECONDS*1000;
 	} else {
-	    blockUrls.PAUSE = blockUrls.DEFAULT_DELAY_SECONDS*1000; 
+	    BlockedSites.PAUSE = BlockedSites.DEFAULT_DELAY_SECONDS*1000; 
 	}
 
-	if (localStorage.blockUrls_ALLOWED_URLS) {
-	    var allowed_urls = localStorage.blockUrls_ALLOWED_URLS;
+	if (localStorage.BlockSites_ALLOWED_URLS) {
+	    var allowed_urls = localStorage.BlockSites_ALLOWED_URLS;
 	} else {
-	    var allowed_urls = [
-	                        "google.com", 
-	                        "stackoverflow.com",
-	                        "amazonaws.com", 
-	                        "amazon.com", 
-	            			"gmail.com",
-	            			"bing.com",
-	       					"chrome://extension",
-	            			"8tracks.com",
-	            			"youtube.com",
-	                        "dropbox.com",
-	                        "chrome-extension://djefgihkfilidjkgnbccipmkhhpkmcaa/popup.html",
-	                        "getbootstrap.com"];
-	}
+	    var allowed_urls = !BlockedSites;
 
-
-
-
-	blockUrls.delay_page_load = function() {    
-	    if (localStorage.blockUrls_ON_OR_OFF && localStorage.blockUrls_ON_OR_OFF != "off") {
+		BlockedSites.delay_page_load = function() {    
+	    if (localStorage.BlockedSites_ON_OR_OFF && localStorage.BlockedSites_ON_OR_OFF != "off") {
 	        var on_or_off = 1;
 	    } else {
 	        var on_or_off = 0;
@@ -562,7 +406,6 @@ function renderAuthZone(){
 	                break;
 	            }
 	        }
-
 	        if (!allowed) {
 				window.location = "file:///Users/nelle/Desktop/midterm-1a/countdown/blockedsite.html";
 	            console.log("not an important page: pausing pageload for "+ (blockUrls.PAUSE/1000) +" seconds");
@@ -570,12 +413,9 @@ function renderAuthZone(){
 	            var date = new Date();
 	            var curDate;
 	            do { curDate = new Date(); }
-	            while ( curDate-date < blockUrls.PAUSE);
+	            while ( curDate-date < BlockedSites.PAUSE);
 	        }
 	    }
 	};
-
-	blockUrls.delay_page_load();
-}
- */
-});
+	BlockedSites.delay_page_load();
+};
