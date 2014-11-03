@@ -21,7 +21,7 @@ body {min-width: 240px;}
     
     <div id="display" class="row-fluid">
         <div class="span12">
-            <div class="progress progress-striped active progress-success progress-large">
+            <div class="progress progress-striped active progress-info progress-large">
                 <div class="bar" id="bar" style="width: 100%;"></div>
             </div>
         </div>
@@ -32,11 +32,11 @@ body {min-width: 240px;}
             <button id="cancel" class="offset1 btn btn-danger"><i class="icon-stop icon-white"></i></button>
             <button id="resume" class="offset1 btn btn-success"><i class="icon-play icon-white"></i></button>
             <button id="pause" class="offset1 btn btn-warning"><i class="icon-pause icon-white"></i></button>
-            <button id="restart" class="offset1 btn"><i class="icon-repeat"></i></button>
-           <button type="button"  id="blockUrls"  class="offset1 btn">   
+            <button id="restart" class="offset1 btn" style="margin-top: 2%;margin-left: 8.5%;"><i class="icon-repeat"></i></button>
+            <!-- <button type="button"  id="blockUrls"  class="offset1 btn">   
                 <span class="glyphicon glyphicon-eye-close"></span>
                 <span class="sr-only">Block</span>
-            </button>
+            </button> -->
         </div>
     </div>
     
@@ -61,14 +61,22 @@ body {min-width: 240px;}
                 <div id="swapper" style="float: right"><a href="#" id="wrench" class="btn"><i class="icon-wrench"></i></a></div>
             </form>
         </div>
-    </div>
+            <div class="auth_zone">
+                <h4 id="list_title">List of blocked sites</h4>
+                <hr>
+                <div>
+                    <input type="text" id="block_page" class="input" value="" size="30">
+                    <input id="add_page" type="button" class="input_button green" value="Add page">                
+                        <div id="blockedlist">
+                            <table class="table table-striped table-bordered table-hover"><tbody>
+                            <tr>
+                            <th>URL</th>
+                            <th>Other</th>
+                            </tr>
+                            </tbody>
+                            </table>
+                        </div>
 </div>
-<div class="alert alert-danger alert-dismissible fade in" role="alert">
-      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-      <h4>Oh snap! This site is blocked!</h4>
-        <button type="button" class="btn btn-danger">Unblock</button>
-        <button type="button" class="btn btn-default">Get back to work</button>
-      </p>
-    </div>
+
 </body>
 </html>
