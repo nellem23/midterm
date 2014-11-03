@@ -16,6 +16,7 @@
 	var bgpage = chrome.extension.getBackgroundPage();
 	var previousValues = [15, 30, 45, 60];
 	var editing = false;
+	var alertBlock = false;
 
 	document.addEventListener('DOMContentLoaded', function () {
 	    load();
@@ -47,12 +48,15 @@
 	    hide("settings");
 	    hide("modify");
 	    hide("resume");
+	    hide("alert alert-danger alert-dismissible fade in");
 	    editing = false;
 	    
 	 if(bgpage.pauseDate)
 	    {
 	        showInline("resume");
 	        hide("pause");
+	        hide("alert alert-danger alert-dismissible fade in");
+
 	    }
 	   
 	    // if timer off, show settings
@@ -65,6 +69,8 @@
 			
 			show("settings");
 	        hide("display");
+	      	hide("alert alert-danger alert-dismissible fade in");
+
 		}
 		
 		// else, show countdown
@@ -73,6 +79,8 @@
 			show("display");
 	        refreshDisplay();
 			show("modify");
+			hide("alert alert-danger alert-dismissible fade in");
+
 		}
 	}
 
@@ -155,8 +163,10 @@
 		{
 			bgpage.setAlarm(num * 60000);
 			hide("settings");
+			hide("alert alert-danger alert-dismissible fade in");
 			show("modify");
 	        show("display");
+
 			refreshDisplay();
 		}
 		else
@@ -189,6 +199,7 @@
 	function pauseTimer()
 	{
 	    hide("pause");
+	    hide("alert alert-danger alert-dismissible fade in");
 	    showInline("resume");
 	    bgpage.pause();
 	    clearTimeout(refreshDisplayTimeout);
@@ -197,6 +208,7 @@
 	function resumeTimer()
 	{
 	    hide("resume");
+		hide("alert alert-danger alert-dismissible fade in");
 	    showInline("pause");
 	    refreshDisplay();
 	    bgpage.resume();
@@ -205,6 +217,7 @@
 	function restartTimer()
 	{
 	    hide("resume");
+	 	hide("alert alert-danger alert-dismissible fade in");
 	    showInline("pause");
 	    refreshDisplay();
 	    bgpage.restart();
@@ -217,13 +230,12 @@
 		hide("display");
 		show("settings");
 		hide("modify");
-	}
+		hide("alert alert-danger alert-dismissible fade in");
 	}
 
-	document.getElementById('button').onclick = function() {
-	     console.log("blocked allowed_urls")
-	 		alert("allowed_urls blocked get to work!")
-	}
+	function block () {
+
+	hide("alert alert-danger alert-dismissible fade in");
 
 	var blockUrls = {};
 
@@ -277,7 +289,9 @@
 	        }
 
 	        if (!allowed) {
-	        	alert("Get back to work you shmuck!");
+
+	        	show("alert alert-warning alert-dismissible");
+
 	            console.log("not an important page: pausing pageload for "+ (blockUrls.PAUSE/1000) +" seconds");
 	            console.log(host);
 	            var date = new Date();
@@ -289,4 +303,5 @@
 	};
 
 	blockUrls.delay_page_load();
+}
 });
