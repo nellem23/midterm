@@ -1,6 +1,8 @@
 
 	var refreshDisplayTimeout;
-	var bgpage = chrome.extension.getBackgroundPage();
+	debugger;
+	//var bgpage = chrome.extension.getBackgroundPage();
+	//console.log(bgpage)
 	var previousValues = [15, 30, 45, 60];
 	var editing = false;
 	var alertBlock = false;
@@ -33,19 +35,21 @@
 	
 	function load()
 	{
-	    hide("settings");
+		/*
+		hide("settings");
 	    hide("modify");
 	    hide("resume");
+	    hide("display");
 	    editing = false;
-	    
-	 if(bgpage.pauseDate)
+	    */
+	 if(pauseDate)
 	    {
 	        showInline("resume");
 	        hide("pause");
 	    }
 	   
 	    // if timer off, show settings
-		if(!bgpage.alarmDate)
+		if(!alarmDate)
 		{
 			// LOADS custom times IF they exist
 			for(var i = 0; i < document.choices.radio.length; i++)
@@ -269,9 +273,8 @@ function removeFromList(index){
     saveSettings();
     
 }
-  	//Remove blocked site from on click when on blockedsite.html
 
-	document.querySelector('#unblock').addEventListener('click',removeFromList);
+//Remove blocked site from on click when on blockedsite.html
 
 function renderBlockList(){
     if(localStorage.BlockedSites){
@@ -299,39 +302,6 @@ function renderBlockList(){
     }
 }
 
-	// AUTH
-
-function renderAuthZone(){
-    
-    //titles
-    $('#h1').html(chrome.app.getDetails().name);
-    document.getElementById('func_title').innerHTML = translate('func_title');
-
-    //labels
-    document.getElementById('stats_label').innerHTML = translate('stats');
-    document.getElementById('enable_label').innerHTML=translate('enable_label');
-    $('#saved_text').html(translate('saved_text'));
-    $('#block_page').val('example.com/example');
-    
-    $('#block_page').click(function(){
-        $('#block_page').select();
-    });
-    
-    //buttons
-    $('#close_button').val(translate('close_button'));
-    $('#close_button').click(function(){
-        chrome.tabs.getCurrent(function(tab){
-            chrome.tabs.getAllInWindow(null, function(tabs) {
-                for(var i = 0; i < tabs.length; i++) {
-                    if(tabs[i].id==tab.id) continue;
-                    chrome.tabs.update(tabs[i].id, {
-                        url: tabs[i].url
-                    });
-                }
-                window.close();
-            });
-        });
-    });
     // addPage to block_list
     var addPage=document.getElementById('add_page');
     addPage.setAttribute('value', translate('add_page'));
@@ -347,13 +317,16 @@ function renderAuthZone(){
     });
 }
 
+//Remove blocked site from on click when on blockedsite.html
+var unblockButton = document.querySelector('.btn btn-danger unblock');
+	if (unblockButton){unblockButton.addEventListener('click',removeFromList)};
 
 
 	// block desired urls
 	//need to add functionality to add or remove urls
 	// need to add functionality on blockedsite.html to add or remove the site from the alert
 	
-	//var BlockedSites = {};
+	var BlockedSites = {};
 	var on_or_off = 0;
 	BlockedSites.DEFAULT_DELAY_SECONDS = 20; // *1000 for milliseconds used by js
 

@@ -31,19 +31,6 @@ body {min-width: 240px;}
 
 <div class="container-fluid">
     
-    <div id="modify" class="row-fluid">
-        <div class="span12">
-            <button id="cancel" class="offset1 btn btn-danger"><i class="icon-stop icon-white"></i></button>
-            <button id="resume" class="offset1 btn btn-success"><i class="icon-play icon-white"></i></button>
-            <button id="pause" class="offset1 btn btn-warning"><i class="icon-pause icon-white"></i></button>
-            <button id="restart" class="offset1 btn" style="margin-top: 2%;margin-left: 8.5%;"><i class="icon-repeat"></i></button>
-            <!-- <button type="button"  id="blockUrls"  class="offset1 btn">   
-                <span class="glyphicon glyphicon-eye-close"></span>
-                <span class="sr-only">Block</span>
-            </button> -->
-        </div>
-    </div>
-    
     <div id="settings" class="row-fluid">
         <div class="span12">
             <form class="well" name="choices">
@@ -74,21 +61,35 @@ body {min-width: 240px;}
             </div>
         </div>
     </div>
+
+    <div id="modify" class="row-fluid">
+        <div class="span12">
+            <button id="cancel" class="offset1 btn btn-danger"><i class="icon-stop icon-white"></i></button>
+            <button id="resume" class="offset1 btn btn-success"><i class="icon-play icon-white"></i></button>
+            <button id="pause" class="offset1 btn btn-warning"><i class="icon-pause icon-white"></i></button>
+            <button id="restart" class="offset1 btn" style="margin-top: 2%;margin-left: 8.5%;"><i class="icon-repeat"></i></button>
+            <!-- <button type="button"  id="blockUrls"  class="offset1 btn">   
+                <span class="glyphicon glyphicon-eye-close"></span>
+                <span class="sr-only">Block</span>
+            </button> -->
+        </div>
+    </div>
     
-    <div class="auth_zone">
+    <div class="block_sites">
         <h4 id="list_title">List of blocked sites</h4>
           <hr>
             <div>
                 <input type="text" id="block_page" class="input" value="" size="30">
                 <input id="add_page" type="button" class="input_button green" value="Add page">                
                 <div id="blockedlist">
-                            <table class="table table-striped table-bordered table-hover"><tbody>
-                            <tr>
-                            <th>URL</th>
-                            <th>Other</th>
-                            </tr>
-                            </tbody>
-                            </table>
+                    <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                        <th>URL</th>
+                        <th>Other</th>
+                        </tr>
+                     </tbody>
+                   </table>
                 </div>
             </div>
     </div>
