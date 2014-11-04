@@ -81,7 +81,7 @@
 		return num;
 	}
 
-	function swap()
+	function swap() //swaps buttons on click events 
 	{
 		editing = true;
 		
