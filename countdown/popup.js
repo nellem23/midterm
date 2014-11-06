@@ -1,12 +1,12 @@
 
-	var refreshDisplayTimeout;
-	debugger;
-	//var bgpage = chrome.extension.getBackgroundPage();
-	//console.log(bgpage)
+	var refreshProgressBarTimeout;
+
+	var bgpage = chrome.extension.getBackgroundPage();
+	console.log(bgpage)
 	var previousValues = [15, 30, 45, 60];
 	var editing = false;
-	var alertBlock = false;
-	var pauseDate = 1;
+	var pauseTimerOn = 1;
+	var timerOn = 1;
 
 	document.addEventListener('DOMContentLoaded', function () {
 	    load();
@@ -35,21 +35,21 @@
 	
 	function load()
 	{
-		/*
+	
 		hide("settings");
 	    hide("modify");
 	    hide("resume");
 	    hide("display");
 	    editing = false;
-	    */
-	 if(pauseDate)
+	 
+	 if(pauseTimerOn)
 	    {
 	        showInline("resume");
 	        hide("pause");
 	    }
 	   
-	    // if timer off, show settings
-		if(!alarmDate)
+	    // if timer off, show settings so user can edit them and set the timer
+		if(!timerOn)
 		{
 			// LOADS custom times IF they exist
 			for(var i = 0; i < document.choices.radio.length; i++)
@@ -60,11 +60,11 @@
 	        hide("display");
 		}
 		
-		// else, show countdown
+		// else, show countdown clock
 		else
 		{
 			show("display");
-	        refreshDisplay();
+	        refreshProgressBar();
 			show("modify");
 		}
   }	
@@ -125,7 +125,7 @@
 		}
 		
 		// swap done button with edit button
-		var butt = document.getElementById("swapper");
+		var editButton = document.getElementById("swapper");
 		butt.innerHTML = "<a href='#' id='wrench' class='btn'><i class='icon-wrench'></i></a>";
 	    document.querySelector('#wrench').addEventListener('click', swap);
 		
@@ -151,7 +151,7 @@
 			show("modify");
 	        show("display");
 
-			refreshDisplay();
+			refreshProgressBar();
 		}
 		else
 			bgpage.error();
@@ -168,7 +168,7 @@
 			return true;
 	}
 
-	function refreshDisplay()
+	function refreshProgressBar()
 	{
 	    percent = bgpage.getTimeLeftPercent();
 	    
@@ -177,7 +177,7 @@
 		document.getElementById("bar").textContent = bgpage.getTimeLeftString();
 	    document.getElementById("bar").style.width = percent + "%";
 	    
-		refreshDisplayTimeout = setTimeout(refreshDisplay, 100);
+		refreshProgressBarTimeout = setTimeout(refreshProgressBar, 100);
 	}
 
 
@@ -186,14 +186,14 @@
 	    hide("pause");
 	    showInline("resume");
 	    bgpage.pause();
-	    clearTimeout(refreshDisplayTimeout);
+	    clearTimeout(refreshProgressBarTimeout);
 	}
 
 	function resumeTimer()
 	{
 	    hide("resume");
 	    showInline("pause");
-	    refreshDisplay();
+	    refreshProgressBar();
 	    bgpage.resume();
 	}
 
@@ -201,13 +201,13 @@
 	{
 	    hide("resume"); 
 	    showInline("pause");
-	    refreshDisplay();
+	    refreshProgressBarTimeout();
 	    bgpage.restart();
 	}
 
 	function reset()
 	{
-		clearTimeout(refreshDisplayTimeout);
+		clearTimeout(refreshProgressBar);
 		bgpage.turnOff();
 		hide("display");
 		show("settings");
@@ -217,6 +217,10 @@
   console.log("done");
 
 // SITE LIST
+
+function saveSettings(){
+	addPageToStorage()
+};
 
 function addPageToStorage(specPage){
     trackButton('Options','Button','AddPage');
@@ -259,7 +263,7 @@ function addPageToStorage(specPage){
         renderDomainSelect();
         saveSettings();
     } else{
-        showMessage(translate('wrong_url'));
+        alert(translate('wrong_url'));
     } 
     pageToBlock.value="";
 }
